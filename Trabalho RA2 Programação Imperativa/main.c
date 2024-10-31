@@ -88,7 +88,7 @@ int main() {
     return 0;
 }
 // FUNÇÃO PARA EXIBIR TODOS OS CARROS
-void exibirCarros(FILE *file) {
+void exibirCarros(FILE *file) { 
     Carro carro;
     rewind(file); // MOVE O PONTEIRO PARA O COMEÇO!!!
 
@@ -96,6 +96,7 @@ void exibirCarros(FILE *file) {
                   carro.marca, carro.modelo, &carro.ano, &carro.km, &carro.preco) == 5) {
         printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
                carro.marca, carro.modelo, carro.ano, carro.km, carro.preco);
+        // TODO: ORDENAR CARROS COM BASE NA KILOMETRAGEM ??
                   }
 }
  // FUNÇÃO PARA EXIBIR TODOS OS CARROS DE UMA MARCA
@@ -107,6 +108,7 @@ void exibirMarca(FILE *file, const char * marca) {
         if (strcmp(carro.marca, marca) == 0) { // COMPARA SE A MARCA DO CARRO É IGUAL A marca
             printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
                carro.marca, carro.modelo, carro.ano, carro.km, carro.preco);
+            // TODO: ORDENAR CARROS COM BASE NA KILOMETRAGEM ?W
         }
     }
 }
