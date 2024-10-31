@@ -1,0 +1,14 @@
+"C:\Program Files\JetBrains\CLion 2024.1.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2024.1.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S "F:\Trabalho RA2 Programação Imperativa" -B "F:\Trabalho RA2 Programação Imperativa\cmake-build-debug"
+-- The C compiler identification is GNU 13.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2024.1.4/bin/mingw/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Error at CMakeLists.txt:6 (add_executable):
+  The target name "Trabalho_RA2_Programação_Imperativa" is reserved or not
+  valid for certain CMake features, such as generator expressions, and may
+  result in undefined behavior.
+
+
+-- Configuring incomplete, errors occurred!
