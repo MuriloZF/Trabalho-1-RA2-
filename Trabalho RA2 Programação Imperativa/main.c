@@ -18,6 +18,13 @@ void exibirRange(FILE *file, float preco_min, float preco_max);
 void inserirCarro(FILE *file);
 void kmMax(FILE *file, int km_max);
 
+int compararKm(const void *a, const void *b) {
+    Carro *carroA = (Carro *)a;
+    Carro *carroB = (Carro *)b;
+    return carroA->km - carroB->km;
+}
+
+
 int main() {
     FILE * file;
     file = fopen("carros.txt", "a+"); // ABRE O ARQUIVO;
@@ -32,7 +39,7 @@ int main() {
                "2-Exibir todos os carros de uma marca\n"
                "3-Exibir todos os carros dentro de um intervalo de precos\n"
                "4-Inserir um novo carro\n"
-               "5-Remover carros superiores a uma kilometragem\n"
+               "5-Remover carros superiores a uma quilometragem\n"
                "6-Sair\n"
                "Escolha: ");
             scanf("%d", &escolha);
@@ -68,10 +75,10 @@ int main() {
                 }
                 case 5: {
                     int km_max;
-                    printf("Digite a kilometragem maxima: ");
+                    printf("Digite a quilometragem maxima: ");
                     scanf("%d", &km_max);
                     kmMax(file, km_max);
-                    printf("Carros com a kilometragem superior a %d foram removidos\n", km_max);
+                    printf("Carros com a quilometragem superior a %d foram removidos\n", km_max);
                     break;
                 }
                 case 6: {
@@ -88,40 +95,59 @@ int main() {
     return 0;
 }
 // FUNÇÃO PARA EXIBIR TODOS OS CARROS
-void exibirCarros(FILE *file) { 
-    Carro carro;
+void exibirCarros(FILE *file) {
+    Carro carros[100];
+    int count = 0;
     rewind(file); // MOVE O PONTEIRO PARA O COMEÇO!!!
-
     while (fscanf(file, "%19[^\n]\n%19[^\n]\n%d\n%d\n%f\n",
-                  carro.marca, carro.modelo, &carro.ano, &carro.km, &carro.preco) == 5) {
-        printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
-               carro.marca, carro.modelo, carro.ano, carro.km, carro.preco);
-        // TODO: ORDENAR CARROS COM BASE NA KILOMETRAGEM ??
+                  carros[count].marca, carros[count].modelo, &carros[count].ano,
+                  &carros[count].km, &carros[count].preco) == 5) {
+        count++;
                   }
-}
- // FUNÇÃO PARA EXIBIR TODOS OS CARROS DE UMA MARCA
-void exibirMarca(FILE *file, const char * marca) {
-    Carro carro;
-    rewind(file);
-    while (fscanf(file, "%19[^\n]\n%19[^\n]\n%d\n%d\n%f\n",
-                  carro.marca, carro.modelo, &carro.ano, &carro.km, &carro.preco) == 5) {
-        if (strcmp(carro.marca, marca) == 0) { // COMPARA SE A MARCA DO CARRO É IGUAL A marca
-            printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
-               carro.marca, carro.modelo, carro.ano, carro.km, carro.preco);
-            // TODO: ORDENAR CARROS COM BASE NA KILOMETRAGEM ?W
-        }
+    // ORDENA OS CARROS PELA KM!!!
+    qsort(carros, count, sizeof(Carro), compararKm);
+    for (int i = 0; i < count; i++) {
+        printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
+               carros[i].marca, carros[i].modelo, carros[i].ano, carros[i].km, carros[i].preco);
     }
 }
-// FUNÇÃO PARA FILTRAR POR RANGE DE PREÇO
-void exibirRange(FILE *file, float preco_min, float preco_max) {
-    Carro carro;
+
+ // FUNÇÃO PARA EXIBIR TODOS OS CARROS DE UMA MARCA
+void exibirMarca(FILE *file, const char *marca) {
+    Carro carros[100];
+    int count = 0;
     rewind(file);
     while (fscanf(file, "%19[^\n]\n%19[^\n]\n%d\n%d\n%f\n",
-                  carro.marca, carro.modelo, &carro.ano, &carro.km, &carro.preco) == 5) {
-        if (carro.preco >= preco_min && carro.preco <= preco_max ) {
-            printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
-              carro.marca, carro.modelo, carro.ano, carro.km, carro.preco);
+                  carros[count].marca, carros[count].modelo, &carros[count].ano,
+                  &carros[count].km, &carros[count].preco) == 5) {
+        if (strcmp(carros[count].marca, marca) == 0) { // COMPARA SE A MARCA DO CARRO É IGUAL A marca
+            count++;
         }
+                  }
+    qsort(carros, count, sizeof(Carro), compararKm);
+    for (int i = 0; i < count; i++) {
+        printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
+               carros[i].marca, carros[i].modelo, carros[i].ano, carros[i].km, carros[i].preco);
+    }
+}
+
+
+// FUNÇÃO PARA FILTRAR POR RANGE DE PREÇO
+void exibirRange(FILE *file, float preco_min, float preco_max) {
+    Carro carros[100];
+    int count = 0;
+    rewind(file);
+    while (fscanf(file, "%19[^\n]\n%19[^\n]\n%d\n%d\n%f\n",
+                  carros[count].marca, carros[count].modelo, &carros[count].ano,
+                  &carros[count].km, &carros[count].preco) == 5) {
+        if (carros[count].preco >= preco_min && carros[count].preco <= preco_max) {
+            count++;
+        }
+                  }
+    qsort(carros, count, sizeof(Carro), compararKm);
+    for (int i = 0; i < count; i++) {
+        printf("Marca: %s | Modelo: %s | Ano: %d | Kilometragem: %d | Preco: %.2f\n",
+               carros[i].marca, carros[i].modelo, carros[i].ano, carros[i].km, carros[i].preco);
     }
 }
 // FUNÇÃO PARA ADICIONAR NOVO CARRO
